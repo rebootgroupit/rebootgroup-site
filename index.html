@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reboot Group — Un Solo Gruppo, Tante Soluzioni</title>
+    <meta name="description" content="Reboot Group: interventi 24h su 24h a Venezia, Venezia Isole e Padova. Dipinture, fabbro, pavimentazione, falegname, sgomberi, elettricista e molto altro.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold:        #C9A84C;
+            --gold-light:  #E2CB6F;
+            --gold-dark:   #A6862E;
+            --black:       #0A0A0A;
+            --black-card:  #141414;
+            --black-deep:  #050505;
+            --white:       #F5F0E8;
+            --white-pure:  #FFFFFF;
+            --gray:        #8A8A8A;
+            --gray-dark:   #2A2A2A;
+            --font-heading: 'Cinzel', serif;
+            --font-body:    'Inter', sans-serif;
+            --font-script:  'Playfair Display', serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== UTILITY ===== */
+        .gold-text    { color: var(--gold); }
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-pad { padding: 100px 24px; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 18px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s, padding 0.4s;
+            background: transparent;
+        }
+        nav.scrolled {
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(12px);
+            padding: 12px 32px;
+            border-bottom: 1px solid var(--gold-dark);
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .nav-logo .crown { font-size: 22px; }
+        .nav-logo .rg {
+            font-family: var(--font-heading);
+            font-size: 14px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--gold);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 24px 80px;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 8s infinite;
+        }
+        @keyframes particleFloat {
+            0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+            10%  { opacity: 0.6; }
+            90%  { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-20vh) scale(1); }
+        }
+        .hero-crown {
+            font-size: 48px;
+            animation: float 4s ease-in-out infinite;
+            margin-bottom: 16px;
+        }
+        .hero-monogram {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .hero-monogram .letter-r {
+            font-family: var(--font-heading);
+            font-size: 120px;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .hero-monogram .letter-g {
+            font-family: var(--font-heading);
+            font-size: 120px;
+            font-weight: 400;
+            color: var(--white);
+            line-height: 1;
+            margin-left: -30px;
+        }
+        .hero-name {
+            font-family: var(--font-heading);
+            font-size: clamp(28px, 5vw, 52px);
+            letter-spacing: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .hero-name span {
+            display: inline-block;
+        }
+        .hero-dashes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 12px 0 32px;
+        }
+        .hero-dashes .dash {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .hero-tagline {
+            font-family: var(--font-script);
+            font-size: clamp(20px, 3vw, 32px);
+            font-style: italic;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .hero-sub {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 48px;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gold);
+            transform: translateX(-101%);
+            transition: transform 0.4s;
+            z-index: -1;
+        }
+        .hero-cta:hover {
+            color: var(--black);
+        }
+        .hero-cta:hover::before {
+            transform: translateX(0);
+        }
+        .hero-cta .arrow {
+            transition: transform 0.3s;
+        }
+        .hero-cta:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ===== 24H BANNER ===== */
+        .banner-24h {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+            padding: 18px 24px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .banner-24h-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 24px;
+            font-family: var(--font-heading);
+            font-size: 15px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--black);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .banner-24h-text .dot {
+            width: 5px;
+            height: 5px;
+            background: var(--black);
+            border-radius: 50%;
+        }
+
+        /* ===== ABOUT ===== */
+        .about {
+            background: var(--black-deep);
+            position: relative;
+        }
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+        }
+        .about-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .about-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .about-heading {
+            font-family: var(--font-heading);
+            font-size: clamp(26px, 4vw, 42px);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 24px;
+        }
+        .about-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--gray);
+            max-width: 640px;
+            margin: 0 auto 40px;
+        }
+        .about-showcase {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 0.8fr;
+            gap: 16px;
+            margin: 0 auto 44px;
+        }
+        .about-shot {
+            position: relative;
+            min-height: 220px;
+            overflow: hidden;
+            border: 1px solid rgba(201,168,76,0.22);
+            background: var(--black-card);
+        }
+        .about-shot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(35%) brightness(0.78);
+        }
+        .about-shot figcaption {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 14px;
+            font-family: var(--font-heading);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.75);
+        }
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            border-top: 1px solid var(--gray-dark);
+            padding-top: 40px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .stat-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        /* ===== SERVICES ===== */
+        .services {
+            background: var(--black);
+            position: relative;
+        }
+        .services-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        .section-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .section-line {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 24px auto 0;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .service-card {
+            background: var(--black-card);
+            border: 1px solid var(--gray-dark);
+            padding: 36px 24px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        .service-card:hover {
+            border-color: var(--gold-dark);
+            transform: translateY(-4px);
+        }
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        .service-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .service-name {
+            font-family: var(--font-heading);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        /* ===== PORTFOLIO ===== */
+        .portfolio {
+            background: var(--black-deep);
+        }
+        .portfolio-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .portfolio-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--black-card);
+        }
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s, filter 0.6s;
+            filter: grayscale(60%) brightness(0.7);
+        }
+        .portfolio-item:hover img {
+            transform: scale(1.08);
+            filter: grayscale(0%) brightness(0.9);
+        }
+        .portfolio-item.position-top img {
+            object-position: center top;
+        }
+        .portfolio-item.position-bottom img {
+            object-position: center bottom;
+        }
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        .portfolio-overlay h3 {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+        .portfolio-overlay p {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        /* ===== ZONES ===== */
+        .zones {
+            background: var(--black);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .zones::before {
+            content: '📍';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .zones-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .zone-cities {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+        .zone-city {
+            text-align: center;
+        }
+        .zone-city .city-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .zone-city .city-name {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .zone-city .city-sub {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact {
+            background: var(--black-deep);
+        }
+        .contact-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .contact-card {
+            background: var(--black-card);
+            border: 1px solid var(--gray-dark);
+            padding: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: border-color 0.3s;
+        }
+        .contact-card:hover {
+            border-color: var(--gold);
+        }
+        .contact-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .contact-value {
+            font-size: 15px;
+            color: var(--white);
+            text-decoration: none;
+        }
+        .contact-value a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact-value a:hover {
+            color: var(--gold);
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 50%, var(--gold-light) 100%);
+            padding: 80px 24px;
+            text-align: center;
+        }
+        .cta-heading {
+            font-family: var(--font-heading);
+            font-size: clamp(24px, 4vw, 40px);
+            font-weight: 900;
+            color: var(--black);
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+        .cta-sub {
+            font-family: var(--font-script);
+            font-size: 20px;
+            font-style: italic;
+            color: rgba(10,10,10,0.7);
+            margin-bottom: 32px;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: var(--black);
+            color: var(--gold);
+            border: none;
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.4s;
+        }
+        .cta-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--black-deep);
+            border-top: 1px solid var(--gray-dark);
+            padding: 40px 24px;
+            text-align: center;
+        }
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .footer-tagline {
+            font-family: var(--font-script);
+            font-size: 14px;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+        .footer-copy {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        .footer-copy a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10,10,10,0.98);
+                padding: 24px;
+                gap: 20px;
+                border-bottom: 1px solid var(--gold-dark);
+            }
+            .hero-monogram .letter-r,
+            .hero-monogram .letter-g {
+                font-size: 72px;
+            }
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .about-showcase {
+                grid-template-columns: 1fr;
+            }
+            .about-shot {
+                min-height: 260px;
+            }
+            .about-stats {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .zone-cities {
+                gap: 32px;
+            }
+        }
+        @media (max-width: 480px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-shot {
+                min-height: 220px;
+            }
+            .hero-monogram .letter-r,
+            .hero-monogram .letter-g {
+                font-size: 56px;
+            }
+            nav { padding: 14px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+            <span class="crown">👑</span>
+            <span class="rg">REBOOT GROUP</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#servizi">Servizi</a></li>
+            <li><a href="#lavori">Lavori</a></li>
+            <li><a href="#zone">Zone</a></li>
+            <li><a href="#contatti">Contatti</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-crown">👑</div>
+        <div class="hero-monogram">
+            <span class="letter-r gold-gradient">R</span>
+            <span class="letter-g">G</span>
+        </div>
+        <div class="hero-dashes">
+            <span class="dash"></span>
+            <span class="dash"></span>
+            <span class="dash"></span>
+        </div>
+        <h1 class="hero-name gold-gradient">REBOOT GROUP</h1>
+        <p class="hero-tagline">Miola Giuliano</p>
+        <div class="hero-dashes" style="margin-bottom: 16px;">
+            <span class="dash"></span>
+            <span class="dash"></span>
+            <span class="dash"></span>
+        </div>
+        <p class="hero-sub">Venezia · Venezia Isole · Padova — Disponibili 24h</p>
+        <a href="#contatti" class="hero-cta">
+            Contattaci Ora <span class="arrow">→</span>
+        </a>
+    </section>
+
+    <!-- 24H BANNER -->
+    <div class="banner-24h">
+        <div class="banner-24h-text">
+            <span>🕒 Disponibili 24 Ore Su 24</span>
+            <span class="dot"></span>
+            <span>📱 Intervento Rapido</span>
+            <span class="dot"></span>
+            <span>🔧 Un Solo Gruppo, Tante Soluzioni</span>
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="about section-pad" id="chi-siamo">
+        <div class="about-inner fade-up">
+            <p class="section-label">Chi Siamo</p>
+            <h2 class="about-heading">Affidabilità, Professionalità, <span class="gold-text">Risultati.</span></h2>
+            <p class="about-text">
+                Reboot Group è il vostro partner di fiducia per ogni esigenza di manutenzione, ristrutturazione e servizi generali.
+                Operiamo <strong>24 ore su 24</strong> su tutto il territorio di <strong>Venezia, Venezia Isole e Padova</strong>,
+                garantendo interventi rapidi e professionalità in ogni ambito.
+            </p>
+            <div class="about-showcase" aria-label="Esempi di lavori Reboot Group">
+                <figure class="about-shot">
+                    <img src="images/pavimento-spina-ungherese.jpeg" alt="Pavimento effetto legno a spina ungherese posato in appartamento" loading="lazy">
+                    <figcaption>Pavimentazioni</figcaption>
+                </figure>
+                <figure class="about-shot">
+                    <img src="images/serratura-porta-blindata.jpeg" alt="Dettaglio serratura e ferramenta su porta blindata" loading="lazy">
+                    <figcaption>Fabbro</figcaption>
+                </figure>
+                <figure class="about-shot">
+                    <img src="images/controsoffitto-isolamento.jpeg" alt="Controsoffitto in cartongesso con isolamento in corso d'opera" loading="lazy">
+                    <figcaption>Cartongesso</figcaption>
+                </figure>
+            </div>
+            <div class="about-stats">
+                <div class="stat">
+                    <div class="stat-number">24h</div>
+                    <div class="stat-label">Disponibilità</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">Servizi</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Zone Coperte</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services section-pad" id="servizi">
+        <div class="services-inner">
+            <div class="section-header fade-up">
+                <p class="section-label">I Nostri Servizi</p>
+                <h2 class="section-title">Un Solo Gruppo, <span class="gold-text">Tante Soluzioni</span></h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-up">
+                    <span class="service-icon">🎨</span>
+                    <span class="service-name">Dipinture</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">⚒️</span>
+                    <span class="service-name">Fabbro</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🟫</span>
+                    <span class="service-name">Pavimentazione</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🪚</span>
+                    <span class="service-name">Falegname</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🚛</span>
+                    <span class="service-name">Sgomberi</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🧴</span>
+                    <span class="service-name">Sanificazioni e Lavaggio</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">⚡</span>
+                    <span class="service-name">Elettricista</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🗄️</span>
+                    <span class="service-name">Montaggio Arredamenti</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🌱</span>
+                    <span class="service-name">Giardinaggio</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">💧</span>
+                    <span class="service-name">Impermeabilizzazioni</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🟨</span>
+                    <span class="service-name">Pavimenti a Resina</span>
+                </div>
+                <div class="service-card fade-up">
+                    <span class="service-icon">🔧</span>
+                    <span class="service-name">Manutenzioni Generali</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section class="portfolio section-pad" id="lavori">
+        <div class="portfolio-inner">
+            <div class="section-header fade-up">
+                <p class="section-label">I Nostri Lavori</p>
+                <h2 class="section-title">Professionalità in <span class="gold-text">Ogni Dettaglio</span></h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-up position-top">
+                    <img src="images/cartongesso-controsoffitto.jpeg" alt="Realizzazione di controsoffitto in cartongesso con isolamento" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Cartongesso</h3>
+                        <p>Controsoffitti, isolamento e finiture</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-up">
+                    <img src="images/serratura-porta-blindata.jpeg" alt="Manutenzione serratura e ferramenta su porta blindata" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Fabbro</h3>
+                        <p>Serrature, porte e interventi di sicurezza</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-up">
+                    <img src="images/pavimento-spina-ungherese.jpeg" alt="Pavimentazione chiara effetto legno a spina ungherese" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Pavimentazione</h3>
+                        <p>Posa pavimenti e rifiniture interne</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-up">
+                    <img src="images/allestimento-parete-attrezzata.jpeg" alt="Allestimento di parete attrezzata con struttura in legno e illuminazione" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Montaggio Arredi</h3>
+                        <p>Strutture, mensole e pareti attrezzate</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-up">
+                    <img src="images/controsoffitto-isolamento.jpeg" alt="Struttura per controsoffitto con pannelli isolanti e cartongesso" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Isolamento</h3>
+                        <p>Interventi tecnici su soffitti e pareti</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-up position-bottom">
+                    <img src="images/giardino-impianti-esterni.jpeg" alt="Manutenzione area esterna con pozzetti e camminamento" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Esterni</h3>
+                        <p>Giardinaggio, camminamenti e manutenzioni</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ZONES -->
+    <section class="zones section-pad" id="zone">
+        <div class="zones-inner fade-up">
+            <div class="section-header">
+                <p class="section-label">Zone di Operatività</p>
+                <h2 class="section-title">Operiamo Dove <span class="gold-text">Serve</span></h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="zone-cities">
+                <div class="zone-city">
+                    <div class="city-icon">🏛️</div>
+                    <div class="city-name">Venezia</div>
+                    <div class="city-sub">Centro storico & mainland</div>
+                </div>
+                <div class="zone-city">
+                    <div class="city-icon">⛵</div>
+                    <div class="city-name">Venezia Isole</div>
+                    <div class="city-sub">Murano, Burano, Lido & oltre</div>
+                </div>
+                <div class="zone-city">
+                    <div class="city-icon">🏛️</div>
+                    <div class="city-name">Padova</div>
+                    <div class="city-sub">Città & provincia</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact section-pad" id="contatti">
+        <div class="contact-inner">
+            <div class="section-header fade-up">
+                <p class="section-label">Contatti</p>
+                <h2 class="section-title">Contattaci <span class="gold-text">Subito</span></h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="contact-grid fade-up">
+                <div class="contact-card">
+                    <span class="contact-icon">📞</span>
+                    <div class="contact-info">
+                        <span class="contact-label">Telefono</span>
+                        <span class="contact-value"><a href="tel:+393520987650">352 098 7650</a></span>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <span class="contact-icon">✉️</span>
+                    <div class="contact-info">
+                        <span class="contact-label">Email</span>
+                        <span class="contact-value"><a href="mailto:rebootgroupit@gmail.com">rebootgroupit@gmail.com</a></span>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <span class="contact-icon">📍</span>
+                    <div class="contact-info">
+                        <span class="contact-label">Sede</span>
+                        <span class="contact-value">Z.A. Via Prima Strada, Int. 3<br>Campolongo Maggiore (VE)</span>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <span class="contact-icon">📄</span>
+                    <div class="contact-info">
+                        <span class="contact-label">Partita IVA</span>
+                        <span class="contact-value">04988680270</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2 class="cta-heading">Hai Bisogno di Intervento?</h2>
+        <p class="cta-sub">Un solo gruppo, tante soluzioni.</p>
+        <a href="tel:+393520987650" class="cta-btn">
+            📞 Chiama Ora
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">👑 REBOOT GROUP</div>
+        <p class="footer-tagline">Affidabilità, Professionalità, Risultati.</p>
+        <p class="footer-copy">© 2026 Reboot Group — P.IVA 04988680270 — <a href="mailto:rebootgroupit@gmail.com">rebootgroupit@gmail.com</a></p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // Intersection Observer for fade-up animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 8 + 's';
+            p.style.animationDuration = (6 + Math.random() * 6) + 's';
+            p.style.width = (1 + Math.random() * 3) + 'px';
+            p.style.height = p.style.width;
+            particlesContainer.appendChild(p);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
